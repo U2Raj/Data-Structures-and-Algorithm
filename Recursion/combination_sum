@@ -1,0 +1,34 @@
+//So basically here we have used recursion, at each step we are following the step that is, picking up that element or not picking up. by making all the combination of the element whihc sum to the target.
+// Time	
+// 𝑂(2^𝑇×𝑛)
+// Space (Stack)	
+// 𝑂(𝑇)
+// Space (Result)	
+// 𝑂(2^𝑇×𝑛)
+// This analysis assumes worst-case scenarios. The actual complexity depends on the size of the candidates array, the target, and the pruning due to arr[idx]≤target.
+
+
+class Solution {
+public:
+   void findCombination(int idx, int target, vector<int>& arr, vector<vector<int>>& ans, vector<int> &ds){
+          if(idx == arr.size()){
+              if(target == 0){
+                ans.push_back(ds);
+              }
+              return;
+          }
+          if(arr[idx]<= target){
+            ds.push_back(arr[idx]);
+            findCombination(idx,target-arr[idx], arr, ans,ds);
+            ds.pop_back();
+          }
+          findCombination(idx+1, target, arr,ans, ds);
+   }
+public:
+    vector<vector<int>> combinationSum(vector<int>& candidates, int target) {
+        vector<vector<int>> ans;
+        vector<int> ds;
+        findCombination(0,target, candidates, ans,ds);
+        return ans;
+    }
+};
