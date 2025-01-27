@@ -1,0 +1,19 @@
+class Solution {
+public:
+   void sumSubset(int idx, int sum,vector<int>& ans,vector<int>& arr){
+        if(idx == arr.size()){
+            ans.push_back(sum);
+            return;
+        }
+        sumSubset(idx+1,sum+arr[idx],ans,arr);  //since we are picking up the element so add in the sum.
+        sumSubset(idx+1,sum,ans,arr);           //Here sum will remain same as we are not picking up any element.
+    }
+  public:
+    vector<int> subsetSums(vector<int>& arr) {
+        // code here
+        int n = arr.size();
+        vector<int> ans;
+        sumSubset(0,0,ans,arr);
+        return ans;
+    }
+};
