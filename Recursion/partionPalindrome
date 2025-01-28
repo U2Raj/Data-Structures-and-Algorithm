@@ -1,0 +1,36 @@
+class Solution {
+public:
+    // Function to check if a substring is a palindrome 🪞
+    bool isPalindrome(string s, int start, int end) {
+        while (start <= end) { // Two-pointer approach 🔁
+            if (s[start++] != s[end--]) { // If characters don’t match, it’s NOT a palindrome 🚫
+                return false;
+            }
+        }
+        return true; // It’s a palindrome! 🥳
+    }
+
+    // Function to generate all palindrome partitions 🧩
+    void palindromCombination(int idx, string s, vector<vector<string>>& ans, 
+                              vector<string>& ds) {
+        if (idx == s.size()) { // Base Case: Reached the end of the string 🎯
+            ans.push_back(ds); // Add the current partition to the result 📦
+            return;
+        }
+        for (int i = idx; i < s.size(); i++) { // Try every possible cut ✂️
+            if (isPalindrome(s, idx, i)) { // Check if the substring is a palindrome 🪞
+                ds.push_back(s.substr(idx, i - idx + 1)); // Add the substring to the current partition ✅
+                palindromCombination(i + 1, s, ans, ds); // Recursively process the rest of the string 🔄
+                ds.pop_back(); // Backtrack to explore other possibilities 🔙🌀
+            }
+        }
+    }
+
+    // Main function to return all partitions 🎯
+    vector<vector<string>> partition(string s) {
+        vector<vector<string>> ans; // To store all valid partitions 🗂️
+        vector<string> ds; // Current partition being built 🧩
+        palindromCombination(0, s, ans, ds); // Start the backtracking adventure 🚀
+        return ans; // Return the result 🌟
+    }
+};
