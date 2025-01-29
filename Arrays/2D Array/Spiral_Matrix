@@ -1,0 +1,73 @@
+# Intuition 🤔💡  
+Imagine drawing a **spiral** 🌀 on a whiteboard! We start from the **top-left** and move **right** ➡, then **down** ⬇, then **left** ⬅, and finally **up** ⬆. We keep repeating this pattern while shrinking the boundaries until we visit all elements.  
+
+# Approach 🚀🛤  
+1. Define four boundaries:  
+   - `left` 🏁 (starting column)  
+   - `right` 🏁 (ending column)  
+   - `top` 🚀 (starting row)  
+   - `bottom` 🚀 (ending row)  
+
+2. Use a direction variable `id` 🔄 to track movement:  
+   - `id = 0` → **Move Left to Right** ➡  
+   - `id = 1` → **Move Top to Bottom** ⬇  
+   - `id = 2` → **Move Right to Left** ⬅  
+   - `id = 3` → **Move Bottom to Top** ⬆  
+
+3. After completing a direction, **shrink the boundary** 🔥.  
+4. Repeat until all elements are added to the result list ✅.  
+
+# Complexity ⏳💻  
+- **Time complexity:** $$O(m \times n)$$ → We visit each element **once**.  
+- **Space complexity:** $$O(1)$$ → We use only a result list, no extra storage.  
+
+# Code 👨‍💻🎯  
+```cpp
+class Solution {
+public:
+    vector<int> spiralOrder(vector<vector<int>>& matrix) {
+        vector<int> res;
+        int rows = matrix.size();
+        int cols = matrix[0].size();
+
+        int left = 0, right = cols - 1, top = 0, bottom = rows - 1;
+        int id = 0;
+
+        /*
+        🔄 Directions:
+        id = 0 → Move left to right ➡
+        id = 1 → Move top to bottom ⬇
+        id = 2 → Move right to left ⬅
+        id = 3 → Move bottom to top ⬆
+        */
+
+        while (left <= right && top <= bottom) {
+            if (id == 0) { // ➡ Move Left to Right
+                for (int i = left; i <= right; i++) {
+                    res.push_back(matrix[top][i]);
+                }
+                top++; // Shrink top boundary 🚀
+            } 
+            else if (id == 1) { // ⬇ Move Top to Bottom
+                for (int i = top; i <= bottom; i++) {
+                    res.push_back(matrix[i][right]);
+                }
+                right--; // Shrink right boundary 🎯
+            } 
+            else if (id == 2) { // ⬅ Move Right to Left
+                for (int i = right; i >= left; i--) {
+                    res.push_back(matrix[bottom][i]);
+                }
+                bottom--; // Shrink bottom boundary 🔥
+            } 
+            else if (id == 3) { // ⬆ Move Bottom to Top
+                for (int i = bottom; i >= top; i--) {
+                    res.push_back(matrix[i][left]);
+                }
+                left++; // Shrink left boundary 🏁
+            }
+            id = (id + 1) % 4; // Cycle through directions 🔄
+        }
+        return res;
+    }
+};
