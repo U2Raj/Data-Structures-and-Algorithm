@@ -1,0 +1,71 @@
+# 🧠 Intuition
+We need to traverse a binary tree in a **zigzag** pattern! Imagine you are climbing up a tree, but on every other level, you need to flip the direction — sometimes from left to right, and sometimes from right to left! 🧗‍♂️ 
+
+We can use **Breadth-First Search (BFS)** to visit each level of the tree, and toggle the direction every time we move to the next level.
+
+# 🛠️ Approach
+1. **Queue to the rescue**: Use a queue to help us visit nodes level by level.
+2. **Flag it**: We use a flag to decide if we need to reverse the order of nodes at each level (zigzag style! 🌀).
+3. **Pop and push**: For each node at a level, we pop it from the queue, push its left and right children to the queue for the next level, and add its value to the `level` vector.
+4. **Toggle the direction**: Once we complete a level, we flip the flag to switch directions for the next level. 🔄
+
+The final result will be a zigzag level order traversal of the binary tree! 🌳
+
+# ⏱️ Complexity
+- **Time Complexity**: **O(n)**  
+  We visit each node exactly once, so the time complexity is proportional to the number of nodes in the tree.
+  
+- **Space Complexity**: **O(n)**  
+  The space is mainly taken up by the queue during traversal. In the worst case (when the tree is balanced), the queue can hold up to **n** nodes.
+
+# 💻 Code
+```cpp
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode() : val(0), left(nullptr), right(nullptr) {}
+ *     TreeNode(int x) : val(x), left(nullptr), right(nullptr) {}
+ *     TreeNode(int x, TreeNode *left, TreeNode *right) : val(x), left(left),
+ * right(right) {}
+ * };
+ */
+class Solution {
+public:
+    // BFS function to traverse the tree level by level
+    void bfs(TreeNode* root, vector<vector<int>>& res) {
+        queue<TreeNode*> q;
+        q.push(root); // Start with the root node
+        bool flag = true; // To toggle direction
+
+        while (!q.empty()) {
+            int size = q.size(); // Number of nodes at the current level
+            vector<int> level(size); // Store nodes of the current level
+
+            for (int i = 0; i < size; i++) {
+                TreeNode* node = q.front();
+                q.pop();
+                // Choose the index based on the direction (flag)
+                int index = (flag) ? i : (size - 1 - i);
+
+                level[index] = node->val; // Store the node value at the correct position
+                if (node->left != nullptr) // Enqueue left child
+                    q.push(node->left);
+                if (node->right != nullptr) // Enqueue right child
+                    q.push(node->right);
+            }
+            flag = !flag; // Toggle the flag for the next level
+            res.push_back(level); // Add the current level to the result
+        }
+    }
+
+    vector<vector<int>> zigzagLevelOrder(TreeNode* root) {
+        vector<vector<int>> res;
+        if (root == nullptr) // Return empty if the tree is empty
+            return res;
+        bfs(root, res); // Call the BFS function
+        return res; // Return the final result
+    }
+};
