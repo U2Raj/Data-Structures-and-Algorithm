@@ -14,7 +14,7 @@ public:
     vector<vector<int>> verticalTraversal(TreeNode* root) {
         //using BFS
         
-        map<int, map<int,multiset<int>>> table;
+        map<int, map<int,multiset<int>>> table;  // vertical , level, Nodes
         queue<pair<TreeNode*, pair<int,int>>> q;
         q.push({root,{0,0}});
 
@@ -31,11 +31,11 @@ public:
 
         } 
          vector<vector<int>> ans;
-         for(auto it1 : table){
+         for(auto it1 : table){    // This is fetching the vertical
             vector<int> col;
-            for(auto it2 : it1.second){
-                col.insert(col.end(), it2.second.begin(),it2.second.end());
-            }
+            for(auto it2 : it1.second){    //In that particular vertical, we are fetching all the levels that is available
+                col.insert(col.end(), it2.second.begin(),it2.second.end());   //In that level, we are inserting all nodes present at the end of col, as we are using "insert" here not push_back
+            }                               
             ans.push_back(col);
          }
         return ans;
