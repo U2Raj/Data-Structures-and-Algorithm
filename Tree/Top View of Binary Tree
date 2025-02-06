@@ -14,8 +14,8 @@ class Solution {
             q.pop();
             
             Node* temp = p.first;
-            int line = p.second;
-            if(mp.find(line)== mp.end()) mp[line] = temp->data;
+            int line = p.second;  //Here line means vertical
+            if(mp.find(line)== mp.end()) mp[line] = temp->data;   // In one vertical, only top node should be present.
             if(temp->left) q.push({temp->left, line-1});
             if(temp->right) q.push({temp->right, line+1});
             
