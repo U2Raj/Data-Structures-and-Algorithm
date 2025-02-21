@@ -1,0 +1,27 @@
+public:
+    // Recursive function with memoization to find the minimum cost to reach the nth step
+
+    int fib(int n, vector<int>& height, vector<int>& dp) {
+       
+        if (n == 0) return 0;  // Base case: If at the first step, no cost is required
+
+        if (dp[n] != -1) return dp[n]; // If the result is already computed, return the stored value (Memoization)
+
+        int left = fib(n - 1, height, dp) + abs(height[n] - height[n - 1]);// Calculate the cost of stepping from (n-1) to n
+
+        int right = INT_MAX; // Initialize right jump as INT_MAX (invalid case when n <= 1)
+
+        if (n > 1) {  // If possible, calculate the cost of stepping from (n-2) to n
+            right = fib(n - 2, height, dp) + abs(height[n] - height[n - 2]);
+        }
+        return dp[n] = min(left, right);   // Store the minimum cost to reach step `n` and return it
+    }
+
+    // Function to find the minimum cost to reach the last step
+
+    int minCost(vector<int>& height) {
+        int n = height.size(); // Total number of steps
+        vector<int> dp(n + 1, -1); // DP array initialized with -1 (uncomputed states)
+        
+        return fib(n - 1, height, dp);  // Start the recursive function from the last step
+    }
