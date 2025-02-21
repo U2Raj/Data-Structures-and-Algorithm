@@ -25,3 +25,25 @@ public:
         
         return fib(n - 1, height, dp);  // Start the recursive function from the last step
     }
+
+
+*******************************************************************************************************************************
+//Tabulation 
+  int minCost(vector<int>& height){
+            int n = height.size();
+            vector<int> dp(n+1,0);
+            dp[0] = 0;
+            for(int i=1; i<=n;i++){
+                int first_step = dp[i-1] + abs(height[i] - height[i-1]);
+                int second_step = INT_MAX;
+                if(i>1) second_step = dp[i-2] + abs(height[i] - height[i-2]);
+                dp[i] = min(first_step,second_step);
+            }
+            return dp[n-1];
+        }
+*******************************************************************************************************************************
+
+//SPace Optimisation
+int minCost(vector<int>& height){
+
+}
