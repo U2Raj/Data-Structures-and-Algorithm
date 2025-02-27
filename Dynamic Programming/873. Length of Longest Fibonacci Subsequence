@@ -32,9 +32,12 @@ public:
     }
 };
 
+TC: O(n^2) (outer for loops) 
+SC:O(n^2) (dp array, map, recursive stack)
+
 ****************************************************************************************************************
 
-//Tabulation (Bottom-up Approach)
+//Tabulation (Bottom-up Approach) 
 
 class Solution {
 public:
@@ -62,3 +65,7 @@ public:
         return (longest_len>=3) ? longest_len : 0;
     }
 };
+TC: O(n^2)
+SC:O(n^2)
+Space Optimised (No Recursive stack) 
+Better than Memoization, avoiding function call overhead.
