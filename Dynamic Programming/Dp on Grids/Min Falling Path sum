@@ -1,26 +1,49 @@
 class Solution {
 public:
 //Memoization
-    int f(int i, int j,vector<vector<int>>& a, vector<vector<int>>& dp){
+    // int f(int i, int j,vector<vector<int>>& a, vector<vector<int>>& dp){
+    //     int n = a.size();
+    //     if(i == 0) return a[i][j];
+    //     if(j<0 || j>n-1) return 1e9;
+        
+    //     if(dp[i][j]!=-1e5) return dp[i][j];
+
+    //     int up = a[i][j] + f(i-1,j,a,dp);
+    //     int left = (j>0) ? a[i][j] + f(i-1,j-1,a,dp) : 1e9;
+    //     int right = (j<n-1) ? a[i][j] + f(i-1,j+1,a,dp) : 1e9;
+
+    //     return dp[i][j] = min({up,left,right});
+        
+    // }
+    int minFallingPathSum(vector<vector<int>>& a) { //matrix tha phle
+        // int n  = matrix.size();
+        // int ans=INT_MAX;
+        // vector<vector<int>> dp(n, vector<int>(n,-1e5));
+        // for(int k=0; k<n;k++){
+        //     int temp = f(n-1,k,matrix,dp);
+        //     ans = min(ans,temp);
+        // }
+        // return ans;
+
+        //Tabulation
         int n = a.size();
-        if(i == 0) return a[i][j];
-        if(j<0 || j>n-1) return 1e9;
-        
-        if(dp[i][j]!=-1e5) return dp[i][j];
-
-        int up = a[i][j] + f(i-1,j,a,dp);
-        int left = (j>0) ? a[i][j] + f(i-1,j-1,a,dp) : 1e9;
-        int right = (j<n-1) ? a[i][j] + f(i-1,j+1,a,dp) : 1e9;
-
-        return dp[i][j] = min({up,left,right});
-        
-    }
-    int minFallingPathSum(vector<vector<int>>& matrix) {
-        int n  = matrix.size();
-        int ans=INT_MAX;
         vector<vector<int>> dp(n, vector<int>(n,-1e5));
-        for(int k=0; k<n;k++){
-            int temp = f(n-1,k,matrix,dp);
+        for(int i=0;i<n;i++){
+            dp[0][i] = a[0][i];
+        }
+
+        for(int i=1; i<n;i++){
+            for(int j=0;j<n;j++){
+               int up = a[i][j] + dp[i-1][j];
+               int left = (j>0) ? a[i][j] + dp[i-1][j-1] : 1e9;
+               int right = (j<n-1) ? a[i][j] + dp[i-1][j+1] : 1e9;
+               dp[i][j] = min({up,left,right});
+            }
+        }
+
+        int ans = dp[n-1][0];
+        for(int i=1;i<n;i++){
+            int temp = dp[n-1][i];
             ans = min(ans,temp);
         }
         return ans;
