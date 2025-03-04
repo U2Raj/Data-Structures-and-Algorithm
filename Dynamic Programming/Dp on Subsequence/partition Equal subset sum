@@ -1,0 +1,28 @@
+class Solution {
+public:
+//Memoization
+    bool f(int idx, int target,vector<int>& nums,vector<vector<int>>& dp){
+        if(target == 0) return true;
+        if(idx == 0 ) return (nums[idx]==target);
+        if(dp[idx][target]!=-1) return dp[idx][target];
+        bool not_pick = f(idx-1, target, nums,dp);
+        bool pick = false;
+        if(target>=nums[idx]){
+            pick = f(idx-1, target - nums[idx], nums,dp);
+        }
+
+       return dp[idx][target] = pick || not_pick;
+    }
+    bool canPartition(vector<int>& nums) {
+        int total_sum=0;
+        int n = nums.size();
+        
+         for(auto& i: nums){
+            total_sum +=i;
+        }
+        vector<vector<int>> dp(n, vector<int>(total_sum/2+1,-1));
+       
+        if(total_sum%2==1) return false;
+        return f(n-1, total_sum/2, nums,dp);
+    }
+};
