@@ -1,0 +1,27 @@
+class Solution {
+public:
+    int minimumRecolors(string blocks, int k) {
+        int n = blocks.size();
+        int i = 0;
+        int wlen = 0;
+        int minW = INT_MAX;
+
+        // First window calculation
+        while (i < k) {
+            if (blocks[i] == 'W') wlen++;
+            i++;
+        }
+
+        minW = wlen;  // Initialize minW with the first window's count
+
+        // Sliding window logic
+        while (i < n) {
+            if (blocks[i] == 'W') wlen++;
+            if (blocks[i - k] == 'W') wlen--;
+            minW = min(minW, wlen);
+            i++;
+        }
+
+        return minW;
+    }
+};
