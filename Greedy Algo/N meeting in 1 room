@@ -1,0 +1,28 @@
+class Solution {
+public:
+    static bool cmp(const pair<int, int>& a, const pair<int, int>& b) {
+        return a.second < b.second;  //  Sort by meeting end time
+    }
+
+    int maxMeetings(vector<int>& start, vector<int>& end) {
+        int n = start.size();
+        vector<pair<int, int>> blocked;
+
+        for (int i = 0; i < n; i++) {
+            blocked.push_back({start[i], end[i]});
+        }
+
+        sort(blocked.begin(), blocked.end(), Solution::cmp);
+
+        int count = 1;
+        int freetime = blocked[0].second;
+
+        for (int i = 1; i < n; i++) {
+            if (blocked[i].first > freetime) {  //  Pick meetings that start after previous one ends
+                count++;
+                freetime = blocked[i].second;
+            }
+        }
+        return count;
+    }
+};
