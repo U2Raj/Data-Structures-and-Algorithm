@@ -1,0 +1,45 @@
+class Solution {
+public:
+    int maximumCandies(vector<int>& candies, long long k) {
+        int n = candies.size();
+        int maxC=0;
+        long long total_candies=0;
+        for(int i=0;i<n;i++){
+          maxC = max(maxC, candies[i]);
+          total_candies+=candies[i];
+        }
+        if(total_candies < k ){
+            return 0;
+        }
+        
+        //brute force approach
+        // for(int i= maxC; i>=1;i--){
+        //     long long count=0;
+        //     for(int j=0;j<n;j++){
+        //         count+= candies[j]/i;
+        //     }
+        //     if(count>=k){
+        //         return i;
+        //     }
+        // }
+
+        //Binary Search
+        int l=1;
+        int r=maxC;
+        int res=0;
+        while(l<=r){
+            int mid = l+(r-l)/2;
+            long long count=0;
+            for(int i=0;i<n;i++){
+                count+=candies[i]/mid;
+            }
+            if(count>=k){
+               res=mid;
+               l=mid+1;
+            }else{
+                r=mid-1;
+            }
+        }
+        return res;
+    }
+};
