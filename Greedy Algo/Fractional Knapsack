@@ -1,0 +1,34 @@
+class Solution {
+public:
+    static bool cmp(pair<double, int>& a, pair<double, int>& b) {
+        return a.first > b.first; // Sort by value-to-weight ratio (descending)
+    }
+
+    double fractionalKnapsack(vector<int>& val, vector<int>& wt, int capacity) {
+        int n = val.size();
+        vector<pair<double, int>> ratio;
+        double totalValue = 0.0;
+
+        // Compute value-to-weight ratio for each item
+        for (int i = 0; i < n; i++) {
+            ratio.push_back({(double)val[i] / wt[i], i});
+        }
+
+        // Sort items in descending order of value-to-weight ratio
+        sort(begin(ratio), end(ratio), cmp);
+
+        // Pick items greedily
+        for (int i = 0; i < n; i++) {
+            int idx = ratio[i].second;
+            if (capacity >= wt[idx]) { 
+                totalValue += val[idx];
+                capacity -= wt[idx];
+            } else { 
+                totalValue += ratio[i].first * capacity; // Take fraction
+                break;
+            }
+        }
+
+        return totalValue; // ✅ Correctly placed outside the loop
+    }
+};
