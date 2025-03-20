@@ -1,0 +1,28 @@
+class Solution {
+public:
+    ListNode* removeNthFromEnd(ListNode* head, int n) {
+        ListNode* dummy = new ListNode(0, head);  // Dummy node to handle edge cases
+        ListNode* first = dummy;
+        ListNode* second = dummy;
+
+        // Move `first` pointer `n + 1` steps ahead
+        for (int i = 0; i <= n; i++) {
+            first = first->next;
+        }
+
+        // Move both `first` and `second` pointers until `first` reaches the end
+        while (first != nullptr) {
+            first = first->next;
+            second = second->next;
+        }
+
+        // `second->next` is now the node to be deleted
+        ListNode* delNode = second->next;
+        second->next = delNode->next;
+        delete delNode;
+
+        ListNode* newHead = dummy->next;
+        delete dummy;
+        return newHead;
+    }
+};
