@@ -1,0 +1,76 @@
+// Using 2 pass (Approach 1)
+
+class Solution {
+public:
+    ListNode* rotateRight(ListNode* head, int k) {
+        if (!head || !head->next || k == 0) return head; // Edge cases
+
+        ListNode* curr = head;
+        int count = 1;
+
+        // Find the length of the list
+        while (curr->next) {
+            curr = curr->next;
+            count++;
+        }
+
+        k = k % count;  // Optimize k
+        if (k == 0) return head;  // No rotation needed
+
+        curr->next = head;  // Connect last node to head (circular list)
+
+        curr = head;
+        int j = count - k - 1;
+        while (j--) {  // ✅ Corrected loop
+            curr = curr->next;
+        }
+
+        ListNode* newHead = curr->next;
+        curr->next = nullptr;  // Break the cycle
+
+        return newHead;
+    }
+};
+
+**************************************************************************************************************************
+
+// Using 1 pass
+
+class Solution {
+public:
+    ListNode* rotateRight(ListNode* head, int k) {
+        if (!head || !head->next || k == 0) return head; // Edge cases
+
+        ListNode* slow = head, *fast = head;
+        int count = 1; // Start from 1 since head is counted
+
+        // Find the length of the list and move fast to the last node
+        while (fast->next) {
+            fast = fast->next;
+            count++;
+        }
+
+        // Reduce unnecessary rotations
+        k = k % count;
+        if (k == 0) return head; // No rotation needed
+
+        // Move `fast` k steps ahead of `slow`
+        fast = head;
+        for (int i = 0; i < k; i++) {
+            fast = fast->next;
+        }
+
+        // Move both `slow` and `fast` till fast reaches the end
+        while (fast->next) {
+            slow = slow->next;
+            fast = fast->next;
+        }
+
+        // Perform rotation
+        ListNode* newHead = slow->next;
+        slow->next = nullptr;
+        fast->next = head;
+
+        return newHead;
+    }
+};
