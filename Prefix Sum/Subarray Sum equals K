@@ -1,0 +1,22 @@
+class Solution {
+public:
+    int subarraySum(vector<int>& nums, int k) {
+        unordered_map<int, int> mp;
+        mp[0]=1; //because at starting the cummulative sum would be zero
+        int n = nums.size();
+        int count=0;
+
+        vector<int> preSum(n + 1, 0);
+        for (int i = 0; i < n; i++) {
+            preSum[i + 1] = preSum[i] + nums[i];
+        }
+        for(int i=1;i<=n;i++){
+            
+            if((preSum[i]-k) == 0 || mp.count(preSum[i]-k)){
+                count+=mp[preSum[i]-k];
+            }
+            mp[preSum[i]]++;
+        }
+        return count;
+    }
+};

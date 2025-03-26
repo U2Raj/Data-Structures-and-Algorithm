@@ -1,0 +1,23 @@
+//This question is based on the concept of Modulo. 
+//When we see repeated remainder, it's sure that multiple of 'k' was added, there for we saw repeated remainder
+
+class Solution {
+public:
+    bool checkSubarraySum(vector<int>& nums, int k) {
+        int n = nums.size();
+        unordered_map<int,int> mp;   //store remainder and it's index
+        mp[0] = -1;
+        int currSum=0;
+        for(int i=0;i<n;i++){
+            currSum+=nums[i];
+            if(mp.find(currSum % k)!=mp.end()){
+                int len = i-mp[currSum % k];
+               if(len>=2) return true;
+            } else{
+                mp[currSum % k] = i;
+            }
+            
+        }
+        return false;
+    }
+};

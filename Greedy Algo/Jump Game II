@@ -1,0 +1,23 @@
+class Solution {
+public:
+    int jump(vector<int>& nums) {
+        int n = nums.size();
+        int l = 0, r = 0, jumps = 0;  // `l` and `r` define the current jump range, `jumps` counts the steps
+        int maxLeap = 0;  // Stores the farthest index we can reach
+
+        // Continue until we reach the last index
+        while (r < n - 1) {
+            // Find the farthest index we can reach in the current jump range [l, r]
+            for (int i = l; i <= r; i++) {
+                maxLeap = max(maxLeap, i + nums[i]);
+            }
+            
+            // Move to the next range
+            l = r + 1;  // Start from the next index after the current range
+            r = maxLeap;  // Extend the range to the farthest possible index
+            jumps++;  // Increase the jump count
+        }
+
+        return jumps;  // Return the minimum jumps needed to reach the last index
+    }
+};
