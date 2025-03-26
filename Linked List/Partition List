@@ -1,0 +1,72 @@
+// Using Dummy Nodes
+
+class Solution {
+public:
+    ListNode* partition(ListNode* head, int x) {
+        ListNode* small = new ListNode(0);
+        ListNode* smallP = small;
+
+        ListNode* large = new ListNode(0);
+        ListNode* largeP = large;
+
+        ListNode* curr = head;
+
+        while(curr!=nullptr){
+            if(curr->val < x){
+                smallP->next = curr;
+                smallP=smallP->next;
+            }else{
+                largeP->next = curr;
+                largeP = largeP->next;
+            }
+            curr=curr->next;
+        }
+        largeP->next = nullptr;
+        smallP->next = large->next;
+
+        return small->next;
+    }
+};
+
+*************************************************************************************************************************
+
+// Without using Dummy Nodes
+
+class Solution {
+public:
+    ListNode* partition(ListNode* head, int x) {
+        ListNode *smallHead = nullptr, *smallTail = nullptr;
+        ListNode *largeHead = nullptr, *largeTail = nullptr;
+
+        ListNode* curr = head;
+
+        while (curr != nullptr) {
+            if (curr->val < x) {
+                if (!smallHead) {
+                    smallHead = smallTail = curr;
+                } else {
+                    smallTail->next = curr;
+                    smallTail = curr;
+                }
+            } else {
+                if (!largeHead) {
+                    largeHead = largeTail = curr;
+                } else {
+                    largeTail->next = curr;
+                    largeTail = curr;
+                }
+            }
+            curr = curr->next;
+        }
+
+        // Prevent cycle
+        if (largeTail) largeTail->next = nullptr;
+
+        // If no elements in the 'small' partition, return 'large' list directly
+        if (!smallHead) return largeHead;
+
+        // Merge two partitions
+        smallTail->next = largeHead;
+        return smallHead;
+    }
+};
